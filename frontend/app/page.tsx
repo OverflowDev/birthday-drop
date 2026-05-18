@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import { LogoMark } from '@/components/LogoMark'
+import { CoinDropMark } from '@/components/LogoCoinDrop'
 
 // ── Animated counter ─────────────────────────────────────────────────────────
 function Counter({ to, decimals = 0 }: { to: number; decimals?: number }) {
@@ -97,7 +97,7 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <LogoMark size={52} />
+            <CoinDropMark size={52} />
           </motion.div>
 
           <motion.div
@@ -348,7 +348,7 @@ export default function Home() {
           <div aria-hidden className="absolute top-0 right-0 w-40 h-40 bg-[#FFE234]/[0.04] -translate-y-1/2 translate-x-1/2 rounded-full blur-2xl pointer-events-none" />
 
           <div className="flex flex-col gap-6">
-            <LogoMark size={48} />
+            <CoinDropMark size={48} />
             <div>
               <p className="text-[11px] font-mono text-white/25 uppercase tracking-[0.3em] mb-4">Get started</p>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">

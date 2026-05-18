@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { LogoMark } from './LogoMark'
+import { CoinDropMark } from './LogoCoinDrop'
 import { cn } from '@/lib/utils'
 
 const NAV = [
@@ -21,7 +21,7 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-10 h-14 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link href="/" className="shrink-0 flex items-center gap-2 group">
-          <LogoMark size={26} />
+          <CoinDropMark size={26} />
           <span className="text-[12px] font-black uppercase tracking-tight text-white leading-none hidden xs:block">
             Birthday<span className="text-[#FFE234]">Drop</span>
           </span>
