@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { ExternalLink, RefreshCw, Share2 } from 'lucide-react'
 import { BIRTHDAY_DROP_ABI } from '@/lib/abi'
 import { BIRTHDAY_DROP_ADDRESS, BIRTHDAY_CARD_ADDRESS, SUPPORTED_TOKENS, THEMES, EXPLORER_URL } from '@/lib/contracts'
-import { shortAddr, formatTokenAmount, formatBirthday, isBirthdayPassed, explorerTx } from '@/lib/utils'
+import { shortAddr, formatTokenAmount, formatBirthday, isBirthdayPassed, explorerTx, giftIdToSlug } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import CountdownTimer from './CountdownTimer'
 
@@ -84,7 +84,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
   }
 
   function handleShare() {
-    const url = `${window.location.origin}/gift/${gift.id.toString()}`
+    const url = `${window.location.origin}/gift/${giftIdToSlug(gift.id)}`
     navigator.clipboard.writeText(url).then(() => toast.success('Gift link copied!'))
   }
 
@@ -164,7 +164,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
           </div>
           <div>
             <p className="text-[9px] font-mono uppercase tracking-widest text-white/25 mb-0.5">Gift #</p>
-            <p className="text-white/60 font-mono text-[11px]">{gift.id.toString()}</p>
+            <p className="text-white/60 font-mono text-[11px]">{giftIdToSlug(gift.id)}</p>
           </div>
           <div>
             <p className="text-[9px] font-mono uppercase tracking-widest text-white/25 mb-0.5">NFT Card</p>
@@ -174,7 +174,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
               rel="noreferrer"
               className="text-white/40 font-mono text-[11px] flex items-center gap-1 hover:text-[#FFE234] transition-colors"
             >
-              #{gift.cardTokenId.toString()} <ExternalLink className="w-2.5 h-2.5" />
+              #{gift.cardTokenId.toString().padStart(6, '0')} <ExternalLink className="w-2.5 h-2.5" />
             </a>
           </div>
         </div>

@@ -15,10 +15,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <RainbowKitProvider
           initialChain={arcTestnet}
           theme={darkTheme({
-            accentColor:          '#7C3AED',
-            accentColorForeground: 'white',
-            borderRadius:         'large',
-            fontStack:            'system',
+            accentColor:           '#FFE234',
+            accentColorForeground: '#080808',
+            borderRadius:          'none',
+            fontStack:             'system',
+            overlayBlur:           'small',
           })}
         >
           {children}

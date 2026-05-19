@@ -13,20 +13,22 @@ import GiftCardPreview from '@/components/GiftCardPreview'
 import CountdownTimer from '@/components/CountdownTimer'
 import { BIRTHDAY_DROP_ABI } from '@/lib/abi'
 import { BIRTHDAY_DROP_ADDRESS, SUPPORTED_TOKENS, THEMES, EXPLORER_URL, BIRTHDAY_CARD_ADDRESS } from '@/lib/contracts'
-import { shortAddr, formatTokenAmount, formatBirthday, isBirthdayPassed, explorerTx, explorerAddr } from '@/lib/utils'
+import { shortAddr, formatTokenAmount, formatBirthday, isBirthdayPassed, explorerTx, explorerAddr, slugToGiftId, giftIdToSlug } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 
 export default function GiftRevealPage({ params }: { params: { giftId: string } }) {
-  const { giftId } = params
+  const { giftId: giftSlug } = params
   const { address, isConnected } = useAccount()
   const { openConnectModal } = useConnectModal()
+
+  const giftIdBig = slugToGiftId(giftSlug)
 
   const { data: gift, isLoading, refetch } = useReadContract({
     address: BIRTHDAY_DROP_ADDRESS,
     abi:     BIRTHDAY_DROP_ABI,
     functionName: 'getGift',
-    args:    [BigInt(giftId)],
-    query:   { retry: false },
+    args:    [giftIdBig ?? 0n],
+    query:   { enabled: giftIdBig !== null, retry: false },
   })
 
   const [txHash, setTxHash] = useState<`0x${string}` | undefined>()
@@ -71,7 +73,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
     )
   }
 
-  if (!gift || (gift as any).sender === '0x0000000000000000000000000000000000000000') {
+  if (giftIdBig === null || !gift || (gift as any).sender === '0x0000000000000000000000000000000000000000') {
     return (
       <div className="min-h-screen bg-[#080808] text-white flex flex-col items-center justify-center gap-6">
         <p className="text-6xl">🎁</p>
@@ -130,7 +132,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
           <div className="border-b border-white/[0.07] pb-6 mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
               <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">
-                Gift #{giftId}
+                Gift #{giftIdToSlug(giftIdBig!)}
               </p>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
                 {status === 'claimed'   && <><span className="text-emerald-400">Claimed</span></>}
@@ -265,7 +267,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
                 { label: 'To',        value: shortAddr(g.recipient),         mono: true  },
                 { label: 'Birthday',  value: formatBirthday(g.birthdayTimestamp), mono: false },
                 { label: 'Theme',     value: `${theme.emoji} ${theme.name}`, mono: false },
-                { label: 'NFT Card',  value: `#${g.cardTokenId.toString()}`, mono: true, link: `${EXPLORER_URL}/token/${BIRTHDAY_CARD_ADDRESS}?a=${g.cardTokenId.toString()}` },
+                { label: 'NFT Card',  value: `#${g.cardTokenId.toString().padStart(6, '0')}`, mono: true, link: `${EXPLORER_URL}/token/${BIRTHDAY_CARD_ADDRESS}?a=${g.cardTokenId.toString()}` },
                 { label: 'Recurring', value: g.recurring ? 'Yes — Annual' : 'No', mono: false },
                 { label: 'Status',    value: status.charAt(0).toUpperCase() + status.slice(1), mono: false },
               ].map(({ label, value, mono, link }, i, arr) => (

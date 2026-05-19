@@ -47,3 +47,25 @@ export function explorerTx(hash: string): string {
 export function explorerAddr(addr: string): string {
   return `https://testnet.arcscan.app/address/${addr}`
 }
+
+// XOR salt — makes sequential IDs produce non-sequential slugs
+const SLUG_SALT = 0x1a2b3c4d
+
+// Encodes a numeric gift ID to a 7-char base-36 slug, e.g. 0 → "06n38sl"
+export function giftIdToSlug(id: bigint): string {
+  const xored = Number(id) ^ SLUG_SALT
+  return xored.toString(36).padStart(7, '0')
+}
+
+// Decodes a slug back to a gift ID. Also accepts plain numeric strings for
+// backwards-compat with old /gift/0 style links.
+export function slugToGiftId(slug: string): bigint | null {
+  try {
+    if (/^\d+$/.test(slug)) return BigInt(slug)
+    const xored = parseInt(slug, 36)
+    if (isNaN(xored) || xored < 0) return null
+    return BigInt(xored ^ SLUG_SALT)
+  } catch {
+    return null
+  }
+}
