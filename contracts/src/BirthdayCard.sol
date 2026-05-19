@@ -76,6 +76,10 @@ contract BirthdayCard is ERC721, Ownable {
         return tokenId;
     }
 
+    function getCard(uint256 tokenId) external view returns (CardData memory) {
+        return cards[tokenId];
+    }
+
     function markClaimed(uint256 tokenId) external onlyBirthdayDrop {
         cards[tokenId].claimed = true;
     }

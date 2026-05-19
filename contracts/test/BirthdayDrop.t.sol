@@ -103,7 +103,7 @@ contract BirthdayDropTest is Test {
 
         assertEq(usdc.balanceOf(bob), GIFT);
         assertTrue(drop.getGift(giftId).claimed);
-        assertTrue(card.cards(drop.getGift(giftId).cardTokenId).claimed);
+        assertTrue(card.getCard(drop.getGift(giftId).cardTokenId).claimed);
     }
 
     function test_RevertClaimGift_TooEarly() public {
@@ -155,7 +155,7 @@ contract BirthdayDropTest is Test {
 
         assertTrue(drop.getGift(giftId).cancelled);
         assertEq(usdc.balanceOf(alice), before + GIFT);
-        assertTrue(card.cards(drop.getGift(giftId).cardTokenId).cancelled);
+        assertTrue(card.getCard(drop.getGift(giftId).cardTokenId).cancelled);
     }
 
     function test_RevertCancelGift_NotSender() public {
@@ -177,8 +177,9 @@ contract BirthdayDropTest is Test {
 
         vm.warp(birthday);
 
+        uint256 nextBirthday = drop.getGift(giftId).birthdayTimestamp + 365 days;
         vm.expectEmit(true, true, true, true);
-        emit BirthdayDrop.RecurringGiftNeeded(giftId, alice, bob, birthday + 365 days);
+        emit BirthdayDrop.RecurringGiftNeeded(giftId, alice, bob, nextBirthday);
 
         vm.prank(bob);
         drop.claimGift(giftId);
