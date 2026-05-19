@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAccount, useReadContract } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { Loader2, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
@@ -17,6 +17,7 @@ type Tab = 'received' | 'sent'
 
 export default function DashboardPage() {
   const { address, isConnected } = useAccount()
+  const { openConnectModal } = useConnectModal()
   const [tab, setTab] = useState<Tab>('received')
 
   const {
@@ -78,9 +79,12 @@ export default function DashboardPage() {
             <p className="text-white/40 text-sm font-mono">
               See all your birthday gifts — sent and received.
             </p>
-            <div className="border border-white/10 inline-block">
-              <ConnectButton />
-            </div>
+            <button
+              onClick={openConnectModal}
+              className="border border-[#FFE234]/30 text-[#FFE234] px-6 py-3 text-[11px] font-mono uppercase tracking-widest hover:bg-[#FFE234] hover:text-black hover:border-[#FFE234] transition-colors"
+            >
+              Connect Wallet →
+            </button>
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useDisconnect } from 'wagmi'
 import { CoinDropMark } from './LogoCoinDrop'
 import { cn } from '@/lib/utils'
 
@@ -15,6 +17,14 @@ const NAV = [
 export default function Header() {
   const path = usePathname()
   const isHome = path === '/'
+  const { disconnect } = useDisconnect()
+  const [copied, setCopied] = useState(false)
+
+  function copyAddress(addr: string) {
+    navigator.clipboard.writeText(addr)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-white/[0.07] bg-[#080808]/90 backdrop-blur-xl">
@@ -62,12 +72,32 @@ export default function Header() {
                 )
               }
 
+              if (connected) {
+                return (
+                  <div className="flex items-center">
+                    <button
+                      onClick={() => copyAddress(account.address ?? '')}
+                      className="border border-[#FFE234]/30 text-[#FFE234] px-4 py-1.5 text-[11px] font-mono uppercase tracking-widest hover:bg-[#FFE234]/10 transition-colors duration-150"
+                    >
+                      {copied ? 'Copied!' : account.displayName}
+                    </button>
+                    <button
+                      onClick={() => disconnect()}
+                      title="Disconnect"
+                      className="border border-[#FFE234]/30 border-l-0 px-3 py-1.5 text-[11px] font-mono text-white/30 hover:text-red-400 hover:border-red-400/40 transition-colors duration-150"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )
+              }
+
               return (
                 <button
-                  onClick={connected ? openAccountModal : openConnectModal}
+                  onClick={openConnectModal}
                   className="border border-[#FFE234]/30 text-[#FFE234] px-4 py-1.5 text-[11px] font-mono uppercase tracking-widest hover:bg-[#FFE234] hover:text-black hover:border-[#FFE234] transition-colors duration-150"
                 >
-                  {connected ? account.displayName : 'Connect'}
+                  Connect
                 </button>
               )
             }}

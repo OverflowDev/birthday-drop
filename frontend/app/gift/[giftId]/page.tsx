@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { Toaster } from 'react-hot-toast'
 import toast from 'react-hot-toast'
 import { ExternalLink, Share2, ArrowLeft } from 'lucide-react'
@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils'
 export default function GiftRevealPage({ params }: { params: { giftId: string } }) {
   const { giftId } = params
   const { address, isConnected } = useAccount()
+  const { openConnectModal } = useConnectModal()
 
   const { data: gift, isLoading, refetch } = useReadContract({
     address: BIRTHDAY_DROP_ADDRESS,
@@ -70,7 +71,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
     )
   }
 
-  if (!gift || (gift as any).id === 0n) {
+  if (!gift || (gift as any).sender === '0x0000000000000000000000000000000000000000') {
     return (
       <div className="min-h-screen bg-[#080808] text-white flex flex-col items-center justify-center gap-6">
         <p className="text-6xl">🎁</p>
@@ -235,7 +236,12 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
                   <p className="text-[10px] font-mono uppercase tracking-widest text-white/30">
                     Connect wallet to claim
                   </p>
-                  <ConnectButton />
+                  <button
+                    onClick={openConnectModal}
+                    className="border border-[#FFE234]/30 text-[#FFE234] px-5 py-2.5 text-[11px] font-mono uppercase tracking-widest hover:bg-[#FFE234] hover:text-black hover:border-[#FFE234] transition-colors"
+                  >
+                    Connect Wallet →
+                  </button>
                 </div>
               )}
 
