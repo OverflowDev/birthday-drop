@@ -129,10 +129,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Stats strip */}
-          <div className="grid grid-cols-3 border-b border-white/[0.07] mb-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-white/[0.07] mb-0">
             {[
               { label: 'Gifts Sent',     value: totalSent },
               { label: 'Gifts Received', value: totalReceived },
+              {
+                label: 'Claimed',
+                value: (receivedGifts as any[]).filter((g: any) => g.claimed).length,
+              },
               {
                 label: 'Claimable Now',
                 value: claimableCount,
@@ -143,7 +147,7 @@ export default function DashboardPage() {
                 key={label}
                 className={cn(
                   'px-5 sm:px-8 py-5 flex flex-col gap-1',
-                  i < 2 && 'border-r border-white/[0.07]',
+                  i < 3 && 'border-r border-white/[0.07]',
                 )}
               >
                 <p className="text-[9px] font-mono uppercase tracking-widest text-white/25">{label}</p>

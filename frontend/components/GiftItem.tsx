@@ -177,6 +177,12 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
               #{gift.cardTokenId.toString().padStart(6, '0')} <ExternalLink className="w-2.5 h-2.5" />
             </a>
           </div>
+          <div className="col-span-2 border-t border-white/[0.04] pt-2 mt-1">
+            <p className="text-[9px] font-mono uppercase tracking-widest text-white/25 mb-0.5">
+              {mode === 'received' ? 'Received on' : 'Sent on'}
+            </p>
+            <p className="text-white/40 font-mono text-[11px]">{formatBirthday(gift.createdAt)}</p>
+          </div>
         </div>
       </div>
 
