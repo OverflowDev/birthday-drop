@@ -65,14 +65,14 @@ export default function NFTGallery({ gifts }: { gifts: GiftData[] }) {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="p-1 border border-white/[0.07] text-white/30 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+              className="p-1 border border-white/[0.07] text-white/55 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page === totalPages - 1}
-              className="p-1 border border-white/[0.07] text-white/30 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+              className="p-1 border border-white/[0.07] text-white/55 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-3.5 h-3.5" />
             </button>

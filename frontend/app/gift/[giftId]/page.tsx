@@ -66,7 +66,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
-        <span className="text-[11px] font-mono uppercase tracking-widest text-white/30 animate-pulse">
+        <span className="text-[11px] font-mono uppercase tracking-widest text-white/55 animate-pulse">
           Loading gift…
         </span>
       </div>
@@ -77,7 +77,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
     return (
       <div className="min-h-screen bg-[#080808] text-white flex flex-col items-center justify-center gap-6">
         <p className="text-6xl">🎁</p>
-        <p className="text-[11px] font-mono uppercase tracking-widest text-white/30">Gift not found</p>
+        <p className="text-[11px] font-mono uppercase tracking-widest text-white/55">Gift not found</p>
         <Link
           href="/"
           className="border border-white/10 px-6 py-2.5 text-[11px] font-mono uppercase tracking-widest text-white/40 hover:text-white hover:border-white/30 transition-colors"
@@ -131,7 +131,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
           {/* Header */}
           <div className="border-b border-white/[0.07] pb-6 mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-white/55 mb-2">
                 Gift #{giftIdToSlug(giftIdBig!)}
               </p>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
@@ -144,7 +144,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
             <div className="flex gap-0 border border-white/10">
               <button
                 onClick={handleShare}
-                className="px-4 py-2.5 border-r border-white/10 text-white/30 hover:text-white/70 hover:bg-white/[0.03] transition-colors"
+                className="px-4 py-2.5 border-r border-white/10 text-white/55 hover:text-white/70 hover:bg-white/[0.03] transition-colors"
               >
                 <Share2 className="w-4 h-4" />
               </button>
@@ -152,7 +152,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
                 href={explorerAddr(BIRTHDAY_DROP_ADDRESS)}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2.5 text-[10px] font-mono uppercase tracking-widest text-white/30 hover:text-white/60 hover:bg-white/[0.03] transition-colors flex items-center gap-2"
+                className="px-4 py-2.5 text-[10px] font-mono uppercase tracking-widest text-white/55 hover:text-white/60 hover:bg-white/[0.03] transition-colors flex items-center gap-2"
               >
                 ArcScan <ExternalLink className="w-3 h-3" />
               </a>
@@ -192,7 +192,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
                   'border p-6',
                   ready ? 'border-[#FFE234]/30 bg-[#FFE234]/5' : 'border-white/[0.07]',
                 )}>
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-4">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-white/55 mb-4">
                     {ready ? '● Ready to Claim' : '◌ Unlocks In'}
                   </p>
                   <CountdownTimer targetTs={g.birthdayTimestamp} large />
@@ -235,7 +235,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
 
               {status === 'pending' && !isConnected && (
                 <div className="border border-white/10 p-4 flex flex-col gap-3">
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-white/30">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                     Connect wallet to claim
                   </p>
                   <button
@@ -252,7 +252,7 @@ export default function GiftRevealPage({ params }: { params: { giftId: string } 
                   href={explorerTx(txHash)}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors"
+                  className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/55 hover:text-white/60 transition-colors"
                 >
                   <ExternalLink className="w-3 h-3" /> View tx on ArcScan
                 </a>

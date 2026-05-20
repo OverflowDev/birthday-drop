@@ -61,24 +61,24 @@ export default function CountdownTimer({ targetTs, onExpired, large = false }: P
           <>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black font-mono text-white tabular-nums">{pad(left.days)}</span>
-              <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 mt-1">days</span>
+              <span className="text-[9px] font-mono uppercase tracking-widest text-white/55 mt-1">days</span>
             </div>
             <span className="text-2xl font-black text-white/20 mb-5 mx-1">:</span>
           </>
         )}
         <div className="flex flex-col items-center">
           <span className="text-4xl font-black font-mono text-white tabular-nums">{pad(left.hours)}</span>
-          <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 mt-1">hrs</span>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-white/55 mt-1">hrs</span>
         </div>
         <span className="text-2xl font-black text-white/20 mb-5 mx-1">:</span>
         <div className="flex flex-col items-center">
           <span className="text-4xl font-black font-mono text-white tabular-nums">{pad(left.minutes)}</span>
-          <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 mt-1">min</span>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-white/55 mt-1">min</span>
         </div>
         <span className="text-2xl font-black text-white/20 mb-5 mx-1">:</span>
         <div className="flex flex-col items-center">
           <span className="text-4xl font-black font-mono text-[#FFE234] tabular-nums">{pad(left.seconds)}</span>
-          <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 mt-1">sec</span>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-white/55 mt-1">sec</span>
         </div>
       </div>
     )

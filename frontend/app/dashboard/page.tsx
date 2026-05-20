@@ -4,11 +4,12 @@ import { useState } from 'react'
 import { useAccount, useReadContract } from 'wagmi'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { Loader2, Plus } from 'lucide-react'
+
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
 
 import Header from '@/components/Header'
-import GiftItem from '@/components/GiftItem'
+import GiftSection from '@/components/GiftSection'
 import NFTGallery from '@/components/NFTGallery'
 import { BIRTHDAY_DROP_ABI } from '@/lib/abi'
 import { BIRTHDAY_DROP_ADDRESS } from '@/lib/contracts'
@@ -72,7 +73,7 @@ export default function DashboardPage() {
         <Header />
         <div className="pt-36 pb-20 px-5 flex flex-col items-center text-center gap-8">
           <div className="border border-white/[0.07] p-12 flex flex-col items-center gap-6">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-white/30">Dashboard</p>
+            <p className="text-[10px] font-mono uppercase tracking-widest text-white/55">Dashboard</p>
             <h1 className="text-4xl font-black uppercase tracking-tight">
               Connect<br />
               <span className="text-[#FFE234]">Wallet</span>
@@ -115,7 +116,7 @@ export default function DashboardPage() {
           {/* Page header */}
           <div className="border-b border-white/[0.07] pb-6 mb-0 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">Overview</p>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-white/55 mb-2">Overview</p>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
                 Gift<br />
                 <span className="text-[#FFE234]">Dashboard</span>
@@ -178,7 +179,7 @@ export default function DashboardPage() {
                   'px-6 py-3 text-[11px] font-mono uppercase tracking-widest transition-colors relative',
                   tab === key
                     ? 'text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#FFE234]'
-                    : 'text-white/30 hover:text-white/60',
+                    : 'text-white/55 hover:text-white/60',
                 )}
               >
                 {label}
@@ -194,7 +195,7 @@ export default function DashboardPage() {
 
           {/* Loading */}
           {isLoading && (
-            <div className="flex items-center justify-center py-24 gap-3 text-white/30">
+            <div className="flex items-center justify-center py-24 gap-3 text-white/55">
               <Loader2 className="w-4 h-4 animate-spin" />
               <span className="text-[11px] font-mono uppercase tracking-widest">Loading…</span>
             </div>
@@ -204,7 +205,7 @@ export default function DashboardPage() {
           {!isLoading && sorted.length === 0 && (
             <div className="border border-white/[0.07] flex flex-col items-center justify-center py-24 gap-5 text-center">
               <p className="text-5xl">{tab === 'received' ? '🎁' : '🎂'}</p>
-              <p className="text-white/30 text-[11px] font-mono uppercase tracking-widest">
+              <p className="text-white/55 text-[11px] font-mono uppercase tracking-widest">
                 {tab === 'received'
                   ? 'No gifts received yet'
                   : 'No gifts sent yet'}
@@ -221,56 +222,41 @@ export default function DashboardPage() {
           )}
 
           {/* ── Claimable Now ───────────────────────────────────────────── */}
-          {!isLoading && tab === 'received' && claimable.length > 0 && (
-            <div className="mb-10">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-2 h-2 bg-[#FFE234] animate-pulse" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFE234]">
-                  Claim Now — {claimable.length} gift{claimable.length > 1 ? 's' : ''} ready
-                </span>
-              </div>
-              <div className="border border-[#FFE234]/20 p-px">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#FFE234]/10">
-                  {claimable.map((g: any) => (
-                    <GiftItem key={g.id.toString()} gift={g} mode="received" onDone={handleRefresh} />
-                  ))}
-                </div>
-              </div>
+          {!isLoading && tab === 'received' && (
+            <div className={claimable.length > 0 ? 'border border-[#FFE234]/20 p-px mb-10' : ''}>
+              <GiftSection
+                label="Claim Now"
+                dot="yellow"
+                gifts={claimable}
+                mode="received"
+                onDone={handleRefresh}
+                wrapClass="bg-[#FFE234]/10"
+              />
             </div>
           )}
 
           {/* ── Upcoming / Active ──────────────────────────────────────── */}
-          {!isLoading && locked.length > 0 && (
-            <div className="mb-10">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-2 h-2 border border-white/20" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">
-                  {tab === 'received' ? 'Upcoming' : 'Active'} — {locked.length} gift{locked.length > 1 ? 's' : ''}
-                </span>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
-                {locked.map((g: any) => (
-                  <GiftItem key={g.id.toString()} gift={g} mode={tab} onDone={handleRefresh} />
-                ))}
-              </div>
-            </div>
+          {!isLoading && (
+            <GiftSection
+              label={tab === 'received' ? 'Upcoming' : 'Active'}
+              dot="dim"
+              gifts={locked}
+              mode={tab}
+              onDone={handleRefresh}
+              wrapClass="bg-white/[0.04]"
+            />
           )}
 
           {/* ── History ───────────────────────────────────────────────── */}
-          {!isLoading && done.length > 0 && (
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-2 h-2 bg-white/10" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-white/20">
-                  History — {done.length} gift{done.length > 1 ? 's' : ''}
-                </span>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.03]">
-                {done.map((g: any) => (
-                  <GiftItem key={g.id.toString()} gift={g} mode={tab} onDone={handleRefresh} />
-                ))}
-              </div>
-            </div>
+          {!isLoading && (
+            <GiftSection
+              label="History"
+              dot="faint"
+              gifts={done}
+              mode={tab}
+              onDone={handleRefresh}
+              wrapClass="bg-white/[0.03]"
+            />
           )}
 
           {/* ── NFT Gallery (always visible, shows all received cards) ── */}

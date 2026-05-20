@@ -87,7 +87,7 @@ export function LogoDisplay({ size = 80 }: { size?: number }) {
         </p>
         <p
           style={{ fontSize: size * 0.1 }}
-          className="font-mono uppercase tracking-[0.25em] text-white/30 mt-1"
+          className="font-mono uppercase tracking-[0.25em] text-white/40 mt-1"
         >
           On Arc
         </p>

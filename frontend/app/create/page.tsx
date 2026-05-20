@@ -154,7 +154,7 @@ export default function CreatePage() {
             href={explorerTx(successHash)}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-white/30 hover:text-white/70 border-b border-white/10 hover:border-white/30 pb-0.5 transition-colors"
+            className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-white/55 hover:text-white/70 border-b border-white/10 hover:border-white/30 pb-0.5 transition-colors"
           >
             <ExternalLink className="w-3 h-3" /> View on ArcScan
           </a>
@@ -206,7 +206,7 @@ export default function CreatePage() {
           {/* Page header */}
           <div className="border-b border-white/[0.07] pb-6 mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">Create</p>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-white/55 mb-2">Create</p>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
                 Birthday<br />
                 <span className="text-[#FFE234]">Gift</span>
@@ -353,7 +353,7 @@ export default function CreatePage() {
                     <RefreshCw className="w-3 h-3 text-[#FFE234]" />
                     Annual Recurring Gift
                   </p>
-                  <p className="text-[10px] font-mono text-white/30 mt-0.5">
+                  <p className="text-[10px] font-mono text-white/55 mt-0.5">
                     You will be notified to renew each year.
                   </p>
                 </div>
@@ -362,7 +362,7 @@ export default function CreatePage() {
               {/* Info */}
               <div className="flex items-start gap-3 border-l-2 border-white/10 pl-4">
                 <Lock className="w-3 h-3 text-white/20 mt-0.5 shrink-0" />
-                <p className="text-[11px] font-mono text-white/30 leading-relaxed">
+                <p className="text-[11px] font-mono text-white/55 leading-relaxed">
                   Funds are locked in the vault contract. Only the recipient can claim — and only after
                   their birthday timestamp passes.
                 </p>

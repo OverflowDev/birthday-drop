@@ -111,7 +111,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
           status === 'claimed'            && 'text-emerald-400',
           status === 'cancelled'          && 'text-red-400',
           status === 'pending' && ready   && 'text-[#FFE234]',
-          status === 'pending' && !ready  && 'text-white/30',
+          status === 'pending' && !ready  && 'text-white/55',
         )}>
           {status === 'claimed'   && '✓ Claimed'}
           {status === 'cancelled' && '✕ Cancelled'}
@@ -235,7 +235,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
           href={explorerTx(txHash)}
           target="_blank"
           rel="noreferrer"
-          className="border-t border-white/[0.06] px-4 py-2 flex items-center gap-1.5 text-[10px] font-mono text-white/30 hover:text-white/60 transition-colors"
+          className="border-t border-white/[0.06] px-4 py-2 flex items-center gap-1.5 text-[10px] font-mono text-white/55 hover:text-white/60 transition-colors"
         >
           <ExternalLink className="w-3 h-3" /> View tx on ArcScan
         </a>

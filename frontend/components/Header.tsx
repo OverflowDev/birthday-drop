@@ -45,7 +45,7 @@ export default function Header() {
               href={href}
               className={cn(
                 'px-4 py-1.5 text-[11px] font-mono uppercase tracking-widest transition-colors duration-150',
-                path === href ? 'text-white' : 'text-white/30 hover:text-white/70'
+                path === href ? 'text-white' : 'text-white/55 hover:text-white'
               )}
             >
               {path === href && <span className="text-[#FFE234] mr-1.5">·</span>}
@@ -84,7 +84,7 @@ export default function Header() {
                     <button
                       onClick={() => disconnect()}
                       title="Disconnect"
-                      className="border border-[#FFE234]/30 border-l-0 px-3 py-1.5 text-[11px] font-mono text-white/30 hover:text-red-400 hover:border-red-400/40 transition-colors duration-150"
+                      className="border border-[#FFE234]/30 border-l-0 px-3 py-1.5 text-[11px] font-mono text-white/55 hover:text-red-400 hover:border-red-400/40 transition-colors duration-150"
                     >
                       ×
                     </button>
