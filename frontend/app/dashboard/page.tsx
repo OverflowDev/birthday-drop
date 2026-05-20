@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAccount, useReadContract } from 'wagmi'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { Loader2, Plus } from 'lucide-react'
+import { Loader2, Plus, RefreshCw } from 'lucide-react'
 
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
@@ -13,7 +13,8 @@ import GiftSection from '@/components/GiftSection'
 import NFTGallery from '@/components/NFTGallery'
 import { BIRTHDAY_DROP_ABI } from '@/lib/abi'
 import { BIRTHDAY_DROP_ADDRESS } from '@/lib/contracts'
-import { cn } from '@/lib/utils'
+import { cn, shortAddr, formatTokenAmount, formatBirthday } from '@/lib/utils'
+import { SUPPORTED_TOKENS } from '@/lib/contracts'
 
 type Tab = 'received' | 'sent'
 
@@ -66,6 +67,16 @@ export default function DashboardPage() {
   const claimableCount = (receivedGifts as any[]).filter(
     (g: any) => !g.claimed && !g.cancelled && Date.now() >= Number(g.birthdayTimestamp) * 1000
   ).length
+
+  // Recurring gifts due for renewal — show 3 days before next birthday, up to 30 days after
+  const THREE_DAYS = 3 * 24 * 3600
+  const THIRTY_DAYS = 30 * 24 * 3600
+  const nowSec = Date.now() / 1000
+  const renewalDue = (sentGifts as any[]).filter((g: any) => {
+    if (!g.recurring || !g.claimed) return false
+    const next = Number(g.birthdayTimestamp) + 365 * 24 * 3600
+    return nowSec >= next - THREE_DAYS && nowSec <= next + THIRTY_DAYS
+  })
 
   if (!isConnected) {
     return (
@@ -165,6 +176,54 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
+
+          {/* ── Renewal banner ──────────────────────────────────────────── */}
+          {renewalDue.length > 0 && (
+            <div className="border border-[#FFE234]/30 bg-[#FFE234]/5 px-5 py-4 flex flex-col gap-3 mt-0 mb-0">
+              <div className="flex items-center gap-2">
+                <RefreshCw className="w-3.5 h-3.5 text-[#FFE234]" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#FFE234]">
+                  Annual Gift{renewalDue.length > 1 ? 's' : ''} Due for Renewal
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                {renewalDue.map((g: any) => {
+                  const nextBirthday = Number(g.birthdayTimestamp) + 365 * 24 * 3600
+                  const daysLeft = Math.ceil((nextBirthday - nowSec) / 86400)
+                  const token = SUPPORTED_TOKENS.find(t => t.address.toLowerCase() === g.token.toLowerCase())
+                  const params = new URLSearchParams({
+                    recipient: g.recipient,
+                    amount:    (Number(g.amount) / 1e6).toString(),
+                    token:     g.token,
+                    recurring: 'true',
+                  })
+                  return (
+                    <div key={g.id.toString()} className="flex items-center justify-between gap-4 border-t border-[#FFE234]/10 pt-2">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-[11px] font-mono text-white/70">
+                          {shortAddr(g.recipient)} · {formatTokenAmount(g.amount)} {token?.symbol}
+                        </span>
+                        <span className="text-[10px] font-mono text-white/40">
+                          Next birthday: {formatBirthday(BigInt(nextBirthday))} ·{' '}
+                          {daysLeft > 0
+                            ? `${daysLeft} day${daysLeft !== 1 ? 's' : ''} away`
+                            : daysLeft === 0
+                            ? 'today!'
+                            : `${Math.abs(daysLeft)} day${Math.abs(daysLeft) !== 1 ? 's' : ''} ago`}
+                        </span>
+                      </div>
+                      <Link
+                        href={`/create?${params.toString()}`}
+                        className="shrink-0 border border-[#FFE234]/40 text-[#FFE234] px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest hover:bg-[#FFE234] hover:text-black transition-colors"
+                      >
+                        Renew →
+                      </Link>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Tabs */}
           <div className="flex border-b border-white/[0.07] mb-8">
