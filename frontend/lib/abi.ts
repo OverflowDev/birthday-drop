@@ -163,6 +163,16 @@ export const BIRTHDAY_DROP_ABI = [
   },
 ] as const
 
+export const BIRTHDAY_CARD_ABI = [
+  {
+    name: 'tokenURI',
+    type: 'function',
+    stateMutability: 'view',
+    inputs:  [{ name: 'tokenId', type: 'uint256' }],
+    outputs: [{ name: '',        type: 'string'  }],
+  },
+] as const
+
 export const ERC20_ABI = [
   {
     name: 'approve',

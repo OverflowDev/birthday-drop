@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast'
 
 import Header from '@/components/Header'
 import GiftItem from '@/components/GiftItem'
+import NFTGallery from '@/components/NFTGallery'
 import { BIRTHDAY_DROP_ABI } from '@/lib/abi'
 import { BIRTHDAY_DROP_ADDRESS } from '@/lib/contracts'
 import { cn } from '@/lib/utils'
@@ -270,6 +271,11 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* ── NFT Gallery (always visible, shows all received cards) ── */}
+          {!loadingReceived && (
+            <NFTGallery gifts={receivedGifts as any[]} />
           )}
         </div>
       </div>
