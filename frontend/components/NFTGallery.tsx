@@ -1,10 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { useReadContracts } from 'wagmi'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import { BIRTHDAY_CARD_ABI } from '@/lib/abi'
 import { BIRTHDAY_CARD_ADDRESS, EXPLORER_URL, SUPPORTED_TOKENS, THEMES } from '@/lib/contracts'
 import { cn, formatTokenAmount, formatBirthday, giftIdToSlug } from '@/lib/utils'
+
+const PAGE_SIZE = 6
 
 type GiftData = {
   id:                bigint
@@ -28,6 +31,11 @@ function parseTokenURI(uri: string) {
 }
 
 export default function NFTGallery({ gifts }: { gifts: GiftData[] }) {
+  const [page, setPage] = useState(0)
+
+  const totalPages = Math.ceil(gifts.length / PAGE_SIZE)
+  const paginated  = gifts.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+
   const { data: uriResults } = useReadContracts({
     contracts: gifts.map(g => ({
       address:      BIRTHDAY_CARD_ADDRESS,
@@ -42,15 +50,39 @@ export default function NFTGallery({ gifts }: { gifts: GiftData[] }) {
 
   return (
     <div className="mt-2 border-t border-white/[0.07] pt-10">
-      <div className="flex items-center gap-3 mb-6">
-        <span className="w-2 h-2 bg-[#FFE234]" />
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">
-          My NFT Cards — {gifts.length}
-        </span>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <span className="w-2 h-2 bg-[#FFE234]" />
+          <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">
+            My NFT Cards — {gifts.length}
+          </span>
+        </div>
+        {totalPages > 1 && (
+          <div className="flex items-center gap-3">
+            <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest">
+              {page + 1} / {totalPages}
+            </span>
+            <button
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              disabled={page === 0}
+              className="p-1 border border-white/[0.07] text-white/30 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={page === totalPages - 1}
+              className="p-1 border border-white/[0.07] text-white/30 hover:text-white hover:border-white/20 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {gifts.map((gift, i) => {
+        {paginated.map((gift) => {
+          const i     = gifts.indexOf(gift)
           const result = uriResults?.[i]
           const parsed = result?.status === 'success'
             ? parseTokenURI(result.result as string)
