@@ -46,7 +46,7 @@ export default function GiftSection({ label, dot = 'dim', gifts, mode, onDone, w
 
         {totalPages > 1 && (
           <div className="flex items-center gap-3">
-            <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest">
+            <span className="text-[9px] font-mono text-white/50 uppercase tracking-widest">
               {page + 1} / {totalPages}
             </span>
             <button

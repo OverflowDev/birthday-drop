@@ -124,7 +124,7 @@ export default function GiftItem({ gift, mode, onDone }: Props) {
               <RefreshCw className="w-2.5 h-2.5" /> Annual
             </span>
           )}
-          <span className="text-[9px] font-mono text-white/20">{theme.emoji} {theme.name}</span>
+          <span className="text-[9px] font-mono text-white/50">{theme.emoji} {theme.name}</span>
         </div>
       </div>
 
